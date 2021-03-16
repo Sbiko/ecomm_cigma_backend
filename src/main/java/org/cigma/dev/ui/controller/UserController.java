@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cigma.dev.model.request.UserDetailsRequestModel;
+import org.cigma.dev.model.response.DeleteOperationStatus;
+import org.cigma.dev.model.response.RequestOperationName;
+import org.cigma.dev.model.response.RequestOperationStatus;
 import org.cigma.dev.model.response.UserRest;
 import org.cigma.dev.service.UserService;
 import org.cigma.dev.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +33,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
 	@GetMapping("/{id}")
 	public ResponseEntity<UserRest> getUser(@PathVariable String id ) {
 		UserRest returnValue = new UserRest();
@@ -48,6 +53,7 @@ public class UserController {
 		return ResponseEntity.ok(returnValue);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
 	@PutMapping("/{id}")
 	public ResponseEntity<UserRest> updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
 		UserRest returnValue = new UserRest();
@@ -59,6 +65,7 @@ public class UserController {
 		return ResponseEntity.ok(returnValue);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<UserRest>> getUsers(@RequestParam(value="page", defaultValue="0") int page,
 			@RequestParam(value="limit", defaultValue="25") int limit) {
@@ -74,8 +81,15 @@ public class UserController {
 		return ResponseEntity.ok(returnValue);
 	}
 	
-	@DeleteMapping
-	public String delateUser() {
-		return "delete user was called";
+	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
+	@DeleteMapping("/{id}")
+	public DeleteOperationStatus delateUser(@PathVariable String id) {
+		DeleteOperationStatus returnValue = new DeleteOperationStatus();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+		
+		userService.deleteUser(id);
+		
+		returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		return returnValue;
 	}
 }

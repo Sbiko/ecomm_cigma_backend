@@ -44,14 +44,14 @@ public class UserEntity implements Serializable {
 	private String nickname;
 	
 	
-//	@Column(nullable=false)
-//	private Boolean emailVerificationStatus = false;
+	@Column(nullable=false)
+	private Boolean emailVerificationStatus = false;
 	
-//	@ManyToMany(cascade= {CascadeType.PERSIST}, fetch= FetchType.EAGER)
-//	@JoinTable(name="users_roles",
-//			joinColumns=@JoinColumn(name="users_id", referencedColumnName="id"),
-//			inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id")
-//	private Collection<RoleEntity> roles;
+	@ManyToMany(cascade= {CascadeType.PERSIST}, fetch= FetchType.EAGER)
+	@JoinTable(name="users_roles",
+			joinColumns=@JoinColumn(name="users_id", referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"))
+	private Collection<RoleEntity> roles;
 	
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -119,6 +119,14 @@ public class UserEntity implements Serializable {
 		this.encryptedPassword = encryptedPassword;
 	}
 
+	public Collection<RoleEntity> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<RoleEntity> roles) {
+		this.roles = roles;
+	}
+
 //	public String getEmailVerificationToken() {
 //		return emailVerificationToken;
 //	}
@@ -136,6 +144,7 @@ public class UserEntity implements Serializable {
 //	}
 
 //	private String emailVerificationToken;
+	
 	
 	
 }

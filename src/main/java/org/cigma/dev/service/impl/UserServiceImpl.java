@@ -6,6 +6,7 @@ import java.util.List;
 import org.cigma.dev.model.entity.UserEntity;
 import org.cigma.dev.model.response.ErrorMessages;
 import org.cigma.dev.repository.UserRepository;
+import org.cigma.dev.security.UserPrincipal;
 import org.cigma.dev.service.UserService;
 import org.cigma.dev.shared.Utils;
 import org.cigma.dev.shared.dto.UserDto;
@@ -53,7 +54,8 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = userRepository.findByNickname(nickname);
 		if(userEntity == null) throw new UsernameNotFoundException(nickname);
 		
-		return new User(userEntity.getNickname(), userEntity.getEncryptedPassword(), new ArrayList<>());
+		//return new User(userEntity.getNickname(), userEntity.getEncryptedPassword(), new ArrayList<>());
+		return new UserPrincipal(userEntity);
 	}
 	
 	@Override
@@ -103,6 +105,13 @@ public class UserServiceImpl implements UserService {
 			returnValue.add(userDto);
 		}
 		return returnValue; 
+	}
+
+	@Override
+	public void deleteUser(String userId) {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		if(userEntity == null) throw new UsernameNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		userRepository.delete(userEntity);
 	}
 	
 	
