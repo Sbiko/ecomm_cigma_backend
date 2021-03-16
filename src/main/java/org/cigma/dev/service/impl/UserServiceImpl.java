@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(user, userEntity);
 		String publicUserId = utils.generateUserId(30);
-		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode("test123"));
 		userEntity.setUserId(publicUserId);
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 		UserDto returnValue = new UserDto();
@@ -49,19 +49,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		UserEntity userEntity = userRepository.findByEmail(email);
-		if(userEntity == null) throw new UsernameNotFoundException(email);
+	public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
+		UserEntity userEntity = userRepository.findByNickname(nickname);
+		if(userEntity == null) throw new UsernameNotFoundException(nickname);
 		
-		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
+		return new User(userEntity.getNickname(), userEntity.getEncryptedPassword(), new ArrayList<>());
 	}
 	
 	@Override
-	public UserDto getUser(String email) {
-		UserEntity userEntity = userRepository.findByEmail(email);
+	public UserDto getUser(String nickanme) {
+		UserEntity userEntity = userRepository.findByNickname(nickanme);
 
 		if (userEntity == null)
-			throw new UsernameNotFoundException(email);
+			throw new UsernameNotFoundException(nickanme);
 
 		UserDto returnValue = new UserDto();
 		BeanUtils.copyProperties(userEntity, returnValue);

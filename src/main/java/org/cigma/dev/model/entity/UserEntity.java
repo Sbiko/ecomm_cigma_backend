@@ -38,7 +38,14 @@ public class UserEntity implements Serializable {
 	private String encryptedPassword;
 	
 	@Column(nullable=false)
-	private Boolean emailVerificationStatus = false;
+	private String phoneNumber;
+	
+	@Column(nullable=false, unique=true)
+	private String nickname;
+	
+	
+//	@Column(nullable=false)
+//	private Boolean emailVerificationStatus = false;
 	
 //	@ManyToMany(cascade= {CascadeType.PERSIST}, fetch= FetchType.EAGER)
 //	@JoinTable(name="users_roles",
@@ -46,6 +53,24 @@ public class UserEntity implements Serializable {
 //			inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id")
 //	private Collection<RoleEntity> roles;
 	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -94,23 +119,23 @@ public class UserEntity implements Serializable {
 		this.encryptedPassword = encryptedPassword;
 	}
 
-	public String getEmailVerificationToken() {
-		return emailVerificationToken;
-	}
+//	public String getEmailVerificationToken() {
+//		return emailVerificationToken;
+//	}
+//
+//	public void setEmailVerificationToken(String emailVerificationToken) {
+//		this.emailVerificationToken = emailVerificationToken;
+//	}
 
-	public void setEmailVerificationToken(String emailVerificationToken) {
-		this.emailVerificationToken = emailVerificationToken;
-	}
+//	public Boolean getEmailVerificationStatus() {
+//		return emailVerificationStatus;
+//	}
+//
+//	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
+//		this.emailVerificationStatus = emailVerificationStatus;
+//	}
 
-	public Boolean getEmailVerificationStatus() {
-		return emailVerificationStatus;
-	}
-
-	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
-		this.emailVerificationStatus = emailVerificationStatus;
-	}
-
-	private String emailVerificationToken;
+//	private String emailVerificationToken;
 	
 	
 }
