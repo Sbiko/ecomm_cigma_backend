@@ -10,11 +10,11 @@ import org.cigma.dev.model.response.RequestOperationStatus;
 import org.cigma.dev.model.response.UserRest;
 import org.cigma.dev.service.UserService;
 import org.cigma.dev.shared.dto.UserDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,41 +27,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v0/users")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+    ModelMapper modelMapper;
+
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
 	@GetMapping("/{id}")
 	public ResponseEntity<UserRest> getUser(@PathVariable String id ) {
-		UserRest returnValue = new UserRest();
+		//UserRest returnValue = new UserRest();
+		
 		UserDto userDto = userService.getUserByUserId(id);
-		BeanUtils.copyProperties(userDto, returnValue);
+		UserRest returnValue = modelMapper.map(userDto, UserRest.class);
+
+		//BeanUtils.copyProperties(userDto, returnValue);
 		return ResponseEntity.ok(returnValue);
 	}
 	
 	@PostMapping
 	public ResponseEntity<UserRest> createUser(@RequestBody UserDetailsRequestModel userDetails) {
-		UserRest returnValue = new UserRest();
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userDetails, userDto);
+		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		
 		UserDto createdUser = userService.createUser(userDto);
-		BeanUtils.copyProperties(createdUser, returnValue);
+		UserRest returnValue = modelMapper.map(createdUser, UserRest.class);
 		return ResponseEntity.ok(returnValue);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
 	@PutMapping("/{id}")
 	public ResponseEntity<UserRest> updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
-		UserRest returnValue = new UserRest();
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userDetails, userDto);
 		
+		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		UserDto updatedUser = userService.updateUser(id, userDto);
-		BeanUtils.copyProperties(updatedUser, returnValue);
+		UserRest returnValue = modelMapper.map(updatedUser, UserRest.class);
+		
 		return ResponseEntity.ok(returnValue);
 	}
 	

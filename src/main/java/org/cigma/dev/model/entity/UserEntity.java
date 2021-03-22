@@ -44,8 +44,7 @@ public class UserEntity implements Serializable {
 	private String nickname;
 	
 	
-	@Column(nullable=false)
-	private Boolean emailVerificationStatus = false;
+
 	
 	@ManyToMany(cascade= {CascadeType.PERSIST}, fetch= FetchType.EAGER)
 	@JoinTable(name="users_roles",
@@ -127,23 +126,6 @@ public class UserEntity implements Serializable {
 		this.roles = roles;
 	}
 
-//	public String getEmailVerificationToken() {
-//		return emailVerificationToken;
-//	}
-//
-//	public void setEmailVerificationToken(String emailVerificationToken) {
-//		this.emailVerificationToken = emailVerificationToken;
-//	}
-
-//	public Boolean getEmailVerificationStatus() {
-//		return emailVerificationStatus;
-//	}
-//
-//	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
-//		this.emailVerificationStatus = emailVerificationStatus;
-//	}
-
-//	private String emailVerificationToken;
 	
 	
 	
