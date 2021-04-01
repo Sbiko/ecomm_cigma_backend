@@ -1,6 +1,7 @@
 package org.cigma.dev.model.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -35,7 +36,7 @@ public class RoleEntity implements Serializable {
 	@JoinTable(name="roles_authorities",
 			joinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="authorities_id", referencedColumnName="id"))
-	private Collection<AuthorityEntity> authorities;
+	private Collection<AuthorityEntity> authorities = new ArrayList<>();
 
 	public RoleEntity() {}
 

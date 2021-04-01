@@ -1,6 +1,6 @@
 package org.cigma.dev.model.request;
 
-public class UserDetailsRequestModel {
+public class UserDetailsRequestCDTO {
 	
 	private String firstName;
 	private String lastName;

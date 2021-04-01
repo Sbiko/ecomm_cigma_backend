@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 
 import org.cigma.dev.model.entity.AuthorityEntity;
 import org.cigma.dev.model.entity.RoleEntity;

@@ -1,7 +1,6 @@
 package org.cigma.dev.model.response;
 
 public enum RequestOperationName {
-	
-	DELETE
 
+	 DELETE, REQUEST_PASSWORD_RESET, PASSWORD_RESET
 }

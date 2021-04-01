@@ -1,6 +1,7 @@
 package org.cigma.dev.model.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -50,7 +51,7 @@ public class UserEntity implements Serializable {
 	@JoinTable(name="users_roles",
 			joinColumns=@JoinColumn(name="users_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"))
-	private Collection<RoleEntity> roles;
+	private Collection<RoleEntity> roles = new ArrayList<>();
 	
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -124,6 +125,13 @@ public class UserEntity implements Serializable {
 
 	public void setRoles(Collection<RoleEntity> roles) {
 		this.roles = roles;
+	}
+
+	@Override
+	public String toString() {
+		return "UserEntity [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", phoneNumber=" + phoneNumber + ", nickname=" + nickname + ", roles=" + roles
+				+ "]";
 	}
 
 	

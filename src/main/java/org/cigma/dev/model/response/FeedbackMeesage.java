@@ -1,6 +1,6 @@
 package org.cigma.dev.model.response;
 
-public class DeleteOperationStatus {
+public class FeedbackMeesage {
 	
 	private String operationResult;
 	private String operationName;

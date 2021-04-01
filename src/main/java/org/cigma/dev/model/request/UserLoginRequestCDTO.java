@@ -1,6 +1,6 @@
 package org.cigma.dev.model.request;
 
-public class UserLoginRequestModel {
+public class UserLoginRequestCDTO {
 	
 	private String nickname;
 	private String password;

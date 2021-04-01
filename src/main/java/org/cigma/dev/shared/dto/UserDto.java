@@ -1,6 +1,9 @@
 package org.cigma.dev.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
+
+import org.cigma.dev.model.response.RolesCDTO;
 
 public class UserDto implements Serializable {
 	
@@ -15,6 +18,8 @@ public class UserDto implements Serializable {
 	private String encryptedPassword;
 	private String phoneNumber;
 	private String nickname;
+	private List<RolesCDTO> roles;
+
 	public long getId() {
 		return id;
 	}
@@ -68,6 +73,12 @@ public class UserDto implements Serializable {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public List<RolesCDTO> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<RolesCDTO> roles) {
+		this.roles = roles;
 	}
 
 	

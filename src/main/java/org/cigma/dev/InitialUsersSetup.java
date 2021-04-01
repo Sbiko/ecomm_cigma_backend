@@ -45,7 +45,6 @@ public class InitialUsersSetup {
 		RoleEntity roleUser = createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
 		RoleEntity roleAdmin = createRole("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 
-		if(roleAdmin == null) return;
 		
 		UserEntity adminUser = new UserEntity();
 		adminUser.setFirstName("Adminstrateur");
@@ -61,7 +60,6 @@ public class InitialUsersSetup {
 		userRepository.save(adminUser);
 	}
 	
-	@Transactional
 	private AuthorityEntity createAuthority(String name) {
 		AuthorityEntity authority = authorityRepository.findByName(name);
 		if(authority == null) {
@@ -71,7 +69,6 @@ public class InitialUsersSetup {
 		return authority;
 	}
 	
-	@Transactional
 	private RoleEntity createRole(String name,
 			Collection<AuthorityEntity> authorities) {
 		RoleEntity role = roleRepository.findByName(name);
