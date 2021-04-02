@@ -39,7 +39,7 @@ public class UserController {
 
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
-	@GetMapping("/{id}")
+	@GetMapping(URL_USERS + "/{id}")
 	public ResponseEntity<UserCDTO> getUser(@PathVariable String id ) {
 		UserDto userDto = userService.getUserByUserId(id);
 		UserCDTO returnValue = modelMapper.map(userDto, UserCDTO.class);

@@ -78,7 +78,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         JSONObject json =new JSONObject();
         json.put("token", token);
         json.put("userID", user.getUserId());
-        json.put("roles", user.getAuthorities());
+       
         PrintWriter out = res.getWriter();
         out.print(json);
         out.flush();
