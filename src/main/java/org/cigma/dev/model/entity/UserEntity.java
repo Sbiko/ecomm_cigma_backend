@@ -3,24 +3,38 @@ package org.cigma.dev.model.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.JoinColumn;
 
-@Entity(name="users")
+@Entity
+@Table(name="users")
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 6771624715841380030L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@Column(nullable=false)
@@ -44,7 +58,8 @@ public class UserEntity implements Serializable {
 	@Column(nullable=false, unique=true)
 	private String nickname;
 	
-	
+	@OneToMany(mappedBy= "customer", cascade = CascadeType.ALL)
+	private Set<OrderEntity> orders = new HashSet<>();
 
 	
 	@ManyToMany(cascade= {CascadeType.PERSIST}, fetch= FetchType.EAGER)
@@ -53,85 +68,16 @@ public class UserEntity implements Serializable {
 			inverseJoinColumns=@JoinColumn(name="roles_id", referencedColumnName="id"))
 	private Collection<RoleEntity> roles = new ArrayList<>();
 	
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
 	
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getEncryptedPassword() {
-		return encryptedPassword;
-	}
-
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
-	}
-
-	public Collection<RoleEntity> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Collection<RoleEntity> roles) {
-		this.roles = roles;
-	}
-
-	@Override
-	public String toString() {
-		return "UserEntity [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", phoneNumber=" + phoneNumber + ", nickname=" + nickname + ", roles=" + roles
-				+ "]";
+	
+	public void add(OrderEntity order) {
+		if(order != null) {
+			if(orders == null) {
+				orders = new HashSet<>();
+			}
+			orders.add(order);
+			order.setCustomer(this);
+		}
 	}
 
 	

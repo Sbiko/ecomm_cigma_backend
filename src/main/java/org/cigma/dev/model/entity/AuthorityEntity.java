@@ -1,8 +1,11 @@
 package org.cigma.dev.model.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name="authorities")
+@Getter
+@Setter
+@NoArgsConstructor
 public class AuthorityEntity implements Serializable {
 
 	private static final long serialVersionUID = 5004678002369549743L;
@@ -28,38 +38,12 @@ public class AuthorityEntity implements Serializable {
 	@ManyToMany(mappedBy = "authorities")
 	private Collection<RoleEntity> roles = new ArrayList<>();
 
-	
-	public AuthorityEntity() {
-		super();
-	}
 
 	public AuthorityEntity(String name) {
 		this.name = name;
 	}
 
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Collection<RoleEntity> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Collection<RoleEntity> roles) {
-		this.roles = roles;
-	}
 	
 	
 	

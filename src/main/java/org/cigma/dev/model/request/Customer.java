@@ -1,21 +1,23 @@
 package org.cigma.dev.model.request;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+public class Customer {
 
-public class PasswordResetRequestCDTO {
-
-	@Email
-	@NotEmpty
+	private String userID;
 	private String email;
-
+	
+	public String getUserID() {
+		return userID;
+	}
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	
 	
 }

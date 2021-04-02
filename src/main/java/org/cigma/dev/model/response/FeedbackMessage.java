@@ -1,6 +1,6 @@
 package org.cigma.dev.model.response;
 
-public class FeedbackMeesage {
+public class FeedbackMessage {
 	
 	private String operationResult;
 	private String operationName;

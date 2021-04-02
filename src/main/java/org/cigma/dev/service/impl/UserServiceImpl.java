@@ -2,6 +2,7 @@ package org.cigma.dev.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 
@@ -9,7 +10,7 @@ import org.cigma.dev.model.entity.PasswordResetTokenEntity;
 import org.cigma.dev.model.entity.UserEntity;
 import org.cigma.dev.model.response.CredentialsCDTO;
 import org.cigma.dev.model.response.ErrorMessages;
-import org.cigma.dev.model.response.FeedbackMeesage;
+import org.cigma.dev.model.response.FeedbackMessage;
 import org.cigma.dev.model.response.RequestOperationStatus;
 import org.cigma.dev.repository.PasswordResetTokenRepository;
 import org.cigma.dev.repository.UserRepository;
@@ -51,14 +52,14 @@ public class UserServiceImpl implements UserService {
 	PasswordResetTokenRepository passwordResetTokenRepository;
 	
 	@Override
-	public FeedbackMeesage createUser(UserDto user) {
+	public FeedbackMessage createUser(UserDto user) {
 		if(userRepository.findByEmail(user.getEmail()) != null) {
 			throw new RuntimeException("Record already exists..");
 		}
 		
 		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
-		String publicUserId = utils.generateUserId(30);
-		String password = utils.generatePasswordUser(7);
+		String publicUserId = utils.generateID(30);
+		String password = utils.generateID(7);
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(password));
 		userEntity.setUserId(publicUserId);
 		userRepository.save(userEntity);
@@ -66,12 +67,10 @@ public class UserServiceImpl implements UserService {
 		CredentialsCDTO credentials = modelMapper.map(userEntity, CredentialsCDTO.class);
 		credentials.setPassword(password);
 		
-		try {
-			mailService.sendUserCredentials(credentials);
-		} catch(MessagingException ex) {
-			System.out.println(ex.getMessage());
-		}
-		FeedbackMeesage returnValue = new FeedbackMeesage();
+		mailService.sendUserCredentials(credentials);
+	
+	
+		FeedbackMessage returnValue = new FeedbackMessage();
 		returnValue.setOperationName("An email has been sent with your credentials");
 		returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
 
@@ -157,9 +156,9 @@ public class UserServiceImpl implements UserService {
 		PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
 		passwordResetTokenEntity.setToken(token);
 		passwordResetTokenEntity.setUserDetails(userEntity);
-		passwordResetTokenRepository.save(passwordResetTokenEntity);
+		PasswordResetTokenEntity savedPasswordResetTokenEntity = passwordResetTokenRepository.save(passwordResetTokenEntity);
 		mailService.sendEmail(token, email);
-		//send the email here
+		returnValue = Optional.ofNullable(savedPasswordResetTokenEntity).isPresent();
 		return returnValue;
 	}
 
@@ -179,7 +178,7 @@ public class UserServiceImpl implements UserService {
 	        }
 
 	        // Prepare new password
-	        String password = utils.generatePasswordUser(7);
+	        String password = utils.generateID(7);
 	        String encodedPassword = bCryptPasswordEncoder.encode(password);
 	        
 	        // Update User password in database
@@ -197,11 +196,9 @@ public class UserServiceImpl implements UserService {
 	        
 	        CredentialsCDTO credentials = modelMapper.map(savedUserEntity, CredentialsCDTO.class);
 			credentials.setPassword(password);
-	        try {
-				mailService.sendUserCredentials(credentials);
-			} catch(MessagingException ex) {
-				System.out.println(ex.getMessage());
-			}
+			mailService.sendUserCredentials(credentials);
+		
+		
 	        
 	        return returnValue;
 	}

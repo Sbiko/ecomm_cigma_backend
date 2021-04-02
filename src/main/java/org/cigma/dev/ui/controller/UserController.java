@@ -3,9 +3,11 @@ package org.cigma.dev.ui.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.cigma.dev.model.request.PasswordResetRequestCDTO;
 import org.cigma.dev.model.request.UserDetailsRequestCDTO;
-import org.cigma.dev.model.response.FeedbackMeesage;
+import org.cigma.dev.model.response.FeedbackMessage;
 import org.cigma.dev.model.response.RequestOperationName;
 import org.cigma.dev.model.response.RequestOperationStatus;
 import org.cigma.dev.model.response.UserCDTO;
@@ -45,11 +47,11 @@ public class UserController {
 	}
 	
 	@PostMapping(URL_USERS)
-	public ResponseEntity<FeedbackMeesage> createUser(@RequestBody UserDetailsRequestCDTO userDetails) {
+	public ResponseEntity<FeedbackMessage> createUser(@RequestBody UserDetailsRequestCDTO userDetails) {
 		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		
-		FeedbackMeesage returnValue = userService.createUser(userDto);
-		return ResponseEntity.ok(returnValue);
+		FeedbackMessage returnValue = userService.createUser(userDto);
+		return ResponseEntity.accepted().body(returnValue);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
@@ -79,8 +81,8 @@ public class UserController {
 	}
 	
 	@PostMapping(URL_USERS + "/password-reset-request")
-	public ResponseEntity<FeedbackMeesage> requestRest(@RequestBody PasswordResetRequestCDTO passwordResetRequestCDTO) {
-		FeedbackMeesage returnValue = new FeedbackMeesage();
+	public ResponseEntity<FeedbackMessage> requestRest(@Valid @RequestBody PasswordResetRequestCDTO passwordResetRequestCDTO) {
+		FeedbackMessage returnValue = new FeedbackMessage();
 		boolean operationResult = userService.requestPasswordReset(passwordResetRequestCDTO.getEmail());
 		returnValue.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
 		returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
@@ -94,8 +96,8 @@ public class UserController {
 	}
 	
 	 @PostMapping(URL_USERS +  "/password-reset")
-	    public ResponseEntity<FeedbackMeesage> resetPassword(@RequestParam String token) {
-		 FeedbackMeesage returnValue = new FeedbackMeesage();
+	    public ResponseEntity<FeedbackMessage> resetPassword(@RequestParam String token) {
+		 FeedbackMessage returnValue = new FeedbackMessage();
 	 
 	        boolean operationResult = userService.resetPassword(token);
 	        
@@ -114,8 +116,8 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.userId")
 	@DeleteMapping(URL_USERS +"/{id}")
-	public FeedbackMeesage deleteUser(@PathVariable String id) {
-		FeedbackMeesage returnValue = new FeedbackMeesage();
+	public FeedbackMessage deleteUser(@PathVariable String id) {
+		FeedbackMessage returnValue = new FeedbackMessage();
 		returnValue.setOperationName(RequestOperationName.DELETE.name());
 		
 		userService.deleteUser(id);

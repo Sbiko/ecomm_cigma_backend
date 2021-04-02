@@ -1,6 +1,7 @@
 package org.cigma.dev.security;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import org.cigma.dev.SpringApplicationContext;
 import org.cigma.dev.model.request.UserLoginRequestCDTO;
 import org.cigma.dev.service.UserService;
 import org.cigma.dev.shared.dto.UserDto;
+import org.json.simple.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,7 +55,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
     
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
@@ -70,11 +73,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         UserDto userDto = userService.getUser(userName);
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         res.addHeader("UserID", userDto.getUserId());
-        res.getWriter().write(
-                "{\"" + "token" + "\":\"" + SecurityConstants.TOKEN_PREFIX  +  token +  "\",\"" + "userID" + "\":\""  + userDto.getUserId() +  "\",\"" + "role" + "\":\""  + user.getAuthorities() +
-                          "\",\"\"}"
+        res.setContentType("application/json");
 
-        );
+        JSONObject json =new JSONObject();
+        json.put("token", token);
+        json.put("userID", user.getUserId());
+        json.put("roles", user.getAuthorities());
+        PrintWriter out = res.getWriter();
+        out.print(json);
+        out.flush();
     }  
 
 }

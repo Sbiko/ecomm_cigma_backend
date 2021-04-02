@@ -16,8 +16,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name="roles")
+@Getter
+@Setter
+@NoArgsConstructor
 public class RoleEntity implements Serializable {
 
 	private static final long serialVersionUID = 3938884233137883696L;
@@ -38,43 +45,11 @@ public class RoleEntity implements Serializable {
 			inverseJoinColumns=@JoinColumn(name="authorities_id", referencedColumnName="id"))
 	private Collection<AuthorityEntity> authorities = new ArrayList<>();
 
-	public RoleEntity() {}
 
 	public RoleEntity(String name) {
 		this.name = name;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Collection<UserEntity> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Collection<UserEntity> users) {
-		this.users = users;
-	}
-
-	public Collection<AuthorityEntity> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Collection<AuthorityEntity> authorities) {
-		this.authorities = authorities;
-	}
 	
 	
 	

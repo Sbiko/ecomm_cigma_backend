@@ -52,7 +52,7 @@ public class InitialUsersSetup {
 		adminUser.setEmail("admin@demo.com");
 		adminUser.setNickname("Addy");
 		adminUser.setPhoneNumber("0011223355");
-		adminUser.setUserId(utils.generateUserId(30));
+		adminUser.setUserId(utils.generateID(30));
 		adminUser.setEncryptedPassword(bCryptPasswordEncoder.encode("test123"));
 		adminUser.setRoles(Arrays.asList(roleAdmin));
 		UserEntity user = userRepository.findByNickname(adminUser.getNickname());
