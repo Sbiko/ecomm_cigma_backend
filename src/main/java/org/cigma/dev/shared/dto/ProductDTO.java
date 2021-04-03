@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductDTO {
 	
+	private Long id;
 	private String sku;
 	private BigDecimal unitPrice;
 	private int unitsInStock;
