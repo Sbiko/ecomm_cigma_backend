@@ -1,22 +1,26 @@
 package org.cigma.dev.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import javax.mail.MessagingException;
-
+import org.cigma.dev.exceptions.UserServiceException;
 import org.cigma.dev.model.entity.PasswordResetTokenEntity;
+import org.cigma.dev.model.entity.RoleEntity;
 import org.cigma.dev.model.entity.UserEntity;
 import org.cigma.dev.model.response.CredentialsCDTO;
 import org.cigma.dev.model.response.ErrorMessages;
 import org.cigma.dev.model.response.FeedbackMessage;
 import org.cigma.dev.model.response.RequestOperationStatus;
 import org.cigma.dev.repository.PasswordResetTokenRepository;
+import org.cigma.dev.repository.RoleRepository;
 import org.cigma.dev.repository.UserRepository;
 import org.cigma.dev.security.UserPrincipal;
 import org.cigma.dev.service.MailService;
 import org.cigma.dev.service.UserService;
+import org.cigma.dev.shared.Roles;
 import org.cigma.dev.shared.Utils;
 import org.cigma.dev.shared.dto.UserDto;
 import org.modelmapper.ModelMapper;
@@ -51,10 +55,13 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	PasswordResetTokenRepository passwordResetTokenRepository;
 	
+	@Autowired
+	RoleRepository roleRepo;
+	
 	@Override
 	public FeedbackMessage createUser(UserDto user) {
 		if(userRepository.findByEmail(user.getEmail()) != null) {
-			throw new RuntimeException("Record already exists..");
+			throw new UserServiceException("Record already exists..");
 		}
 		
 		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
@@ -62,6 +69,13 @@ public class UserServiceImpl implements UserService {
 		String password = utils.generateID(7);
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(password));
 		userEntity.setUserId(publicUserId);
+		Collection<RoleEntity> roles = new HashSet<>();
+		RoleEntity role = roleRepo.findByName(Roles.ROLE_USER.name());
+		if(Optional.ofNullable(role).isPresent()) {
+			roles.add(role);
+		}
+		
+		userEntity.setRoles(roles);
 		userRepository.save(userEntity);
 		
 		CredentialsCDTO credentials = modelMapper.map(userEntity, CredentialsCDTO.class);

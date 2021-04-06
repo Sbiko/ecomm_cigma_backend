@@ -22,30 +22,29 @@ public class InitialUsersSetup {
 
 	@Autowired
 	AuthorityRepository authorityRepository;
-	
+
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	Utils utils;
-	
+
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@EventListener
 	@Transactional
 	public void onApplicationEvent(ApplicationReadyEvent event) {
 		AuthorityEntity readAuthority = createAuthority("READ_AUTHORITY");
 		AuthorityEntity writeAuthority = createAuthority("WRITE_AUTHORITY");
 		AuthorityEntity deleteAuthority = createAuthority("DELETE_AUTHORITY");
-		
-		RoleEntity roleUser = createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
+
+		createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
 		RoleEntity roleAdmin = createRole("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 
-		
 		UserEntity adminUser = new UserEntity();
 		adminUser.setFirstName("Adminstrateur");
 		adminUser.setLastName("Adminstrateur");
@@ -56,24 +55,24 @@ public class InitialUsersSetup {
 		adminUser.setEncryptedPassword(bCryptPasswordEncoder.encode("test123"));
 		adminUser.setRoles(Arrays.asList(roleAdmin));
 		UserEntity user = userRepository.findByNickname(adminUser.getNickname());
-		if(user != null) return;
+		if (user != null)
+			return;
 		userRepository.save(adminUser);
 	}
-	
+
 	private AuthorityEntity createAuthority(String name) {
 		AuthorityEntity authority = authorityRepository.findByName(name);
-		if(authority == null) {
+		if (authority == null) {
 			authority = new AuthorityEntity(name);
 			authorityRepository.save(authority);
 		}
 		return authority;
 	}
-	
-	private RoleEntity createRole(String name,
-			Collection<AuthorityEntity> authorities) {
+
+	private RoleEntity createRole(String name, Collection<AuthorityEntity> authorities) {
 		RoleEntity role = roleRepository.findByName(name);
-		
-		if(role == null) {
+
+		if (role == null) {
 			role = new RoleEntity(name);
 			role.setAuthorities(authorities);
 			roleRepository.save(role);

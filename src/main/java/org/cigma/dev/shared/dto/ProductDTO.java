@@ -17,6 +17,6 @@ public class ProductDTO {
 	private BigDecimal unitPrice;
 	private int unitsInStock;
 	private String name;
-	private String productID;
+	private String productId;
 
 }

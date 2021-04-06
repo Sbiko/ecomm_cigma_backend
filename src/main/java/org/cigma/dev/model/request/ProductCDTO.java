@@ -20,4 +20,6 @@ public class ProductCDTO {
 	private int unitsInStock;
 	@NotEmpty
 	private String name;
+	
+	private String productId;
 }

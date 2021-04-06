@@ -1,21 +1,26 @@
 package org.cigma.dev.ui.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.cigma.dev.model.request.ProductCDTO;
 import org.cigma.dev.model.response.FeedbackMessage;
+import org.cigma.dev.service.MailService;
 import org.cigma.dev.service.ProductService;
 import org.cigma.dev.shared.dto.ProductDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,6 +31,9 @@ public class ProductController {
 	
 	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	MailService mailService;
 	
 	@PostMapping(URL_PRODUCT)
 	public ResponseEntity<FeedbackMessage> addProduct(@Valid @RequestBody ProductCDTO product ) {
@@ -52,7 +60,6 @@ public class ProductController {
 	}
 	
 	
-
 	@GetMapping(URL_PRODUCT + "/{id}")
 	public ResponseEntity<ProductCDTO> getProduct(@PathVariable String id) {
 		ProductDTO productDto = productService.getProduct(id);
@@ -60,5 +67,16 @@ public class ProductController {
 		return ResponseEntity.ok(returnValue);
 	}
 	
-	// GET LIST OF PRODUCTS
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(URL_PRODUCT)
+	public ResponseEntity<List<ProductCDTO>> getProducts(@RequestParam(value="page", defaultValue="0") int page,
+			@RequestParam(value="limit", defaultValue="25") int limit) {
+			List<ProductCDTO> products = productService.getProducts(page, limit);
+		return ResponseEntity.ok(products);
+	}
+	
+	
+	
+	
 }

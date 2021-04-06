@@ -32,7 +32,7 @@ public class OrderItemEntity {
 	private int quantity;
 	
 	@Column(name="product_id")
-	private Long productId;
+	private String productId;
 	
 	@ManyToOne
 	@JoinColumn(name="order_id")

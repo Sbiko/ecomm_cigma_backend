@@ -3,8 +3,14 @@ package org.cigma.dev.model.request;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class OrderCDTO {
 
 	private int totalQuantity;
@@ -14,34 +20,7 @@ public class OrderCDTO {
 
 	private Set<OrderItemCDTO> orderItems;
 
-	public int getTotalQuantity() {
-		return totalQuantity;
-	}
 
-
-	public void setTotalQuantity(int totalQuantity) {
-		this.totalQuantity = totalQuantity;
-	}
-
-
-	public BigDecimal getTotalPrice() {
-		return totalPrice;
-	}
-
-
-	public void setTotalPrice(BigDecimal totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-
-
-	public Set<OrderItemCDTO> getOrderItems() {
-		return orderItems;
-	}
-
-
-	public void setOrderItems(Set<OrderItemCDTO> orderItems) {
-		this.orderItems = orderItems;
-	}
 	
 	
 	
