@@ -80,6 +80,14 @@ public class UserEntity implements Serializable {
 		}
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "UserEntity [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email  + "]";
+	}
+
 	
 	
 	

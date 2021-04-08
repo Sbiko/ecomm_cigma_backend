@@ -85,6 +85,8 @@ public class ProductServiceImpl implements ProductService {
 
 		ProductEntity productToSave = productRepo.findByProductID(id);
 		productToSave.setUnitPrice(product.getUnitPrice());
+		productToSave.setUnitsInStock(product.getUnitsInStock());
+
 		productToSave.setName(product.getName());
 		productRepo.save(productToSave);
 		

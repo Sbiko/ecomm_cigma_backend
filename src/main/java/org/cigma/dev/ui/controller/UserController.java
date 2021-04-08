@@ -17,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -124,6 +126,13 @@ public class UserController {
 		
 		returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
 		return returnValue;
+	}
+	
+	@GetMapping(URL_USERS + "/logged/{id}")
+	public boolean isUserLogged(@PathVariable String id) {
+		boolean returnValue = userService.isUserLogged(id);
+		return returnValue;
+
 	}
 	
 	

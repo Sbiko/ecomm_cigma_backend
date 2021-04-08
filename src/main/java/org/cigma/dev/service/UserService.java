@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService{
 	void deleteUser(String userId);
 	boolean requestPasswordReset(String email);
 	boolean resetPassword(String token);
+	boolean isUserLogged(String userId);
 }

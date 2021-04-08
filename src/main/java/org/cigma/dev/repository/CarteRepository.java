@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface CarteRepository extends JpaRepository<CartEntity, Integer> {
 	List<CartEntity> findByUserId(String userId);
 	List<CartEntity> findByProduct(ProductEntity product);
+	CartEntity findByCartId(String cartID);
+	CartEntity findFirstByUserId(String userId);
 }

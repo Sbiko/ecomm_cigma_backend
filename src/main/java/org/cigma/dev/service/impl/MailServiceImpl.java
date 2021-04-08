@@ -92,11 +92,11 @@ public class MailServiceImpl implements MailService {
 
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.password", "vmzqmrsvkhejjuid");
+		props.put("mail.smtp.password", "ccidbychlrattmwb");
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("sbikowak@gmail.com", "code");
+				return new PasswordAuthentication("sbikowak@gmail.com", "ccidbychlrattmwb");
 			}
 		});
 		try {

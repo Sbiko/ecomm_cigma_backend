@@ -2,6 +2,7 @@ package org.cigma.dev.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -18,6 +19,7 @@ public class UserPrincipal implements UserDetails {
 
 	UserEntity userEntity;
 	private String userId;
+	private String rolePrincipal;
 	
 	public UserPrincipal(UserEntity userEntity) {
 		this.userEntity = userEntity;
@@ -33,7 +35,8 @@ public class UserPrincipal implements UserDetails {
 		Collection<RoleEntity> roles = userEntity.getRoles();
 		if(roles == null) return authorities;
 		
-		roles.forEach((role) -> {
+		roles.forEach( (role) -> {
+			rolePrincipal = role.getName();
 			authorities.add(new SimpleGrantedAuthority(role.getName()));
 			authoritiesEntities.addAll(role.getAuthorities());
 		});
@@ -90,5 +93,25 @@ public class UserPrincipal implements UserDetails {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
+	@Override
+	public String toString() {
+		return "UserPrincipal [userEntity=" + userEntity + ", userId=" + userId + "]";
+	}
+
+	public String getRolePrincipal() {
+		return rolePrincipal;
+	}
+
+	public void setRolePrincipal(String rolePrincipal) {
+		this.rolePrincipal = rolePrincipal;
+	}
+
+	
+
+	
+
+	
+	
 
 }

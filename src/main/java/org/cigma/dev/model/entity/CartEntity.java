@@ -42,6 +42,6 @@ public class CartEntity {
     
     private int quantity;
 
-    private String cartID;
+    private String cartId;
 
 }

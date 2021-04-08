@@ -3,6 +3,7 @@ package org.cigma.dev.security;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -75,9 +76,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         res.addHeader("UserID", userDto.getUserId());
         res.setContentType("application/json");
 
+
         JSONObject json =new JSONObject();
         json.put("token", token);
         json.put("userID", user.getUserId());
+        json.put("role", user.getRolePrincipal());
        
         PrintWriter out = res.getWriter();
         out.print(json);

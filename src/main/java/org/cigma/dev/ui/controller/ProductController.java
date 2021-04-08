@@ -55,6 +55,7 @@ public class ProductController {
 		ProductDTO productDto = new ProductDTO();
 		productDto.setName(product.getName());
 		productDto.setUnitPrice(product.getUnitPrice());
+		productDto.setUnitsInStock(product.getUnitsInStock());
 		FeedbackMessage returnValue = productService.updateProduct(id, productDto);
 		return ResponseEntity.ok(returnValue);
 	}
@@ -68,7 +69,6 @@ public class ProductController {
 	}
 	
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(URL_PRODUCT)
 	public ResponseEntity<List<ProductCDTO>> getProducts(@RequestParam(value="page", defaultValue="0") int page,
 			@RequestParam(value="limit", defaultValue="25") int limit) {
