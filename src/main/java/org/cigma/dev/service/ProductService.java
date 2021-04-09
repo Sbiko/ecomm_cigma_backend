@@ -13,4 +13,5 @@ public interface ProductService {
 	FeedbackMessage updateProduct(String id, ProductDTO product);
 	ProductDTO getProduct(String id);
 	List<ProductCDTO> getProducts(int page, int limit);
+	List<ProductCDTO> getProductsByName(String name, int page, int limit);
 }

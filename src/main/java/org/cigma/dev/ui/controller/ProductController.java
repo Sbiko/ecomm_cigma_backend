@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,7 +75,13 @@ public class ProductController {
 		return ResponseEntity.ok(products);
 	}
 	
-	
+	@GetMapping(URL_PRODUCT + "/search")
+	public ResponseEntity<List<ProductCDTO>> getProductByName(@RequestParam(value="name") String name, 
+			@RequestParam(value="page", defaultValue="0") int page,
+			@RequestParam(value="limit", defaultValue="25") int limit) {
+			List<ProductCDTO> products = productService.getProductsByName(name, page, limit);
+		return ResponseEntity.ok(products);
+	}
 	
 	
 }

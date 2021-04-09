@@ -67,9 +67,7 @@ public class ProductServiceImpl implements ProductService {
 		List<CartEntity> carts = cartRepo.findByProduct(product);
 		FeedbackMessage feedback = new FeedbackMessage();
 		if(!carts.isEmpty()) {
-			feedback.setOperationName("Product cant be deleted from database");
-			feedback.setOperationResult(RequestOperationStatus.ERROR.name());
-			return feedback;
+			throw new ProductServiceException("Product cant be deleted from database");
 		}
 		productRepo.delete(product);
 		feedback.setOperationName("Product was deleted from database");
@@ -122,6 +120,20 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 
+	@Override
+	public List<ProductCDTO> getProductsByName(String name, int page, int limit) {
+		List<ProductCDTO> returnValue = new ArrayList<>();
+		Pageable pageableRequest = PageRequest.of(page, limit);
+
+		Page<ProductEntity> productsPage = productRepo.findByNameContainingIgnoreCase(name, pageableRequest);
+		List<ProductEntity> products = productsPage.getContent();
+
+		products.forEach(p -> returnValue.add(modelMapper.map(p, ProductCDTO.class)));
+		return returnValue;
+	}
+
+
+	
 
 
 }
